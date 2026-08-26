@@ -285,7 +285,43 @@ Después de caracterizar escenarios y votar con los roles involucrados, estos so
 
 ---
 
-## Supuestos y restricciones
+## Restricciones de negocio
+
+| Tipo | Restricción de negocio | Justificación | Plan de acción |
+|------|------------------------|---------------|----------------|
+| Humano | El equipo de desarrollo es pequeño y es un trabajo académico. Nadie queda dando soporte después de la entrega. | Si se diseña algo muy complejo, después no va a haber quién lo mantenga. | Se opta por una arquitectura simple y bien documentada, dividiendo el trabajo por módulos según la disponibilidad de cada integrante. |
+| Humano | El equipo de negocio solo cuenta con una hora diaria para trabajar en el proyecto. | Hay que aprovechar ese tiempo limitado y priorizar lo más urgente cada semana. | Distribuir las tareas según esa hora disponible al día y priorizar semanalmente lo más urgente. |
+| Tiempo | El proyecto tiene un tiempo límite definido por la universidad. | Es un proyecto académico con fechas establecidas por la institución. | Dividir el proyecto en etapas claras y cumplir con las fechas definidas. |
+| Presupuesto | No hay presupuesto definido para hosting ni servicios en la nube. | Elegir mal el servicio de hospedaje podría comprometer la disponibilidad del sistema. | Usar servicios en la nube con planes gratuitos como Render, Railway o Firebase, suficientes para esta fase. |
+| Legal | El sistema no debe incumplir la normativa de facturación electrónica de la DIAN. | Si el sistema tocara precios o facturación sin cumplir esa normativa, expondría a Servingeniería a sanciones que hoy no le corresponden. | Se delimita el alcance para que no gestione precios ni facturación. Eso se deja en el área contable de la empresa. |
+| Organizacional | Servingeniería nunca ha usado un sistema digital para este proceso. Siempre ha sido con Excel o de forma manual. | Un cambio muy brusco puede dificultar que el equipo lo adopte. | Se diseña la primera versión imitando la lógica y el lenguaje que ya usan en su Excel, para que la transición se sienta natural. |
+| Proceso | Algunas reglas de negocio aún se están definiendo y el cliente indica que se debe ir implementando lo que se vaya identificando. | Hay decisiones pendientes sobre cancelaciones, estados y permisos. | Ir documentando e implementando cada necesidad a medida que el cliente la vaya confirmando. |
+| Tecnológico | El equipo no tiene experiencia previa construyendo apps con escaneo de cámara. | Es una parte clave del sistema y podría tomar más tiempo del esperado. | Se desarrolla un prototipo del escaneo QR desde las primeras semanas, para resolver esa curva de aprendizaje antes de que afecte el cronograma. |
+
+---
+
+## Restricciones técnicas
+
+| Tipo | Categoría | Restricción técnica | Justificación |
+|------|-----------|---------------------|---------------|
+| Impuesta por el cliente | Tecnología base | La aplicación debe ser accesible tanto desde un navegador web como desde un dispositivo móvil. | Fue solicitado explícitamente por la encargada de bodega, ya que el personal opera tanto desde la bodega como desde los sitios de los proyectos. |
+| Impuesta por el cliente | Tecnología base | La aplicación debe permitir usar la cámara del dispositivo para leer códigos QR y de barras. | Se identificó como una necesidad puntual para agilizar el registro y la búsqueda de productos sin tener que escribir cada dato manualmente. |
+| Impuesta por el cliente | Rendimiento | La consulta del stock de un producto debe responder en un tiempo muy corto, cercano al tiempo real. | La stakeholder fue explícita en que no quería depender de preguntar a otra persona ni de revisar un archivo desactualizado. |
+| Propia del proyecto | Reactividad | El sistema debe apoyarse en principios de reactividad, propagando los cambios de forma automática para que la información se mantenga al día sin que el empleado deba refrescar. | Es la forma en que el equipo decidió resolver la necesidad de no depender de una actualización manual del stock, y permite que el sistema responda bien aunque varios empleados generen cambios al mismo tiempo. |
+| Propia del proyecto | Capacidad concurrente | El sistema debe permitir que varios empleados registren movimientos al mismo tiempo sin generar inconsistencias en el stock. | Es una condición necesaria para que el sistema sea confiable en un entorno con varios usuarios simultáneos, tanto en bodega como en distintos proyectos. |
+| Propia del proyecto | Disponibilidad | El sistema debe poder funcionar con alta disponibilidad en horario laboral. | El usuario indicó que la disponibilidad prioritaria es en horario laboral. |
+| Propia del proyecto | Prácticas de diseño | El diseño y desarrollo del software debe seguir los principios SOLID. | Para lograr un software más mantenible y fácil de ajustar, considerando que el sistema seguirá evolucionando después de la primera entrega. |
+| Propia del proyecto | Prácticas de diseño | El sistema debe diseñarse con bajo acoplamiento entre sus módulos: productos, pedidos, entradas, salidas, proyectos y notificaciones. | Para que un cambio en un módulo, como notificaciones, no afecte el funcionamiento de los demás. |
+| Propia del proyecto | Prácticas de diseño | El sistema debe diseñarse de forma que los catálogos de tipos y de estados puedan ampliarse sin modificar el código existente. | Coincide con la decisión de que estos catálogos sean editables sin afectar la lógica de los módulos que los usan. |
+| Propia del proyecto | Patrones de diseño | Propender por el uso de patrones como DRY y KISS. | Ayudan a evitar la duplicación de código y a mantener el sistema simple, reduciendo el riesgo de errores al hacer cambios. |
+| Propia del proyecto | Código limpio | Propender por prácticas de código limpio, evitando código desordenado o difícil de entender. | Facilita que cualquier persona del equipo entienda y modifique el sistema, considerando que el equipo de desarrollo es pequeño. |
+| Propia del proyecto | Organización | El sistema debe construirse con una organización clara entre sus distintas capas o módulos. | Facilita el mantenimiento y permite que el sistema crezca sin volverse desordenado. |
+| Propia del proyecto | Metodología | El desarrollo debe llevarse a cabo con una metodología ágil que permita ajustes progresivos sobre lo ya construido. | Varias decisiones de diseño, como las reglas de estados y de permisos, se han ido ajustando durante el proceso y es previsible que sigan cambiando. |
+| Propia del proyecto | Prácticas DevOps | Propender por prácticas que permitan automatizar las pruebas y los despliegues del sistema. | Ayuda a reducir errores manuales y a que el equipo pueda entregar cambios de forma más rápida y confiable. |
+
+---
+
+## Supuestos y restricciones adicionales
 
 ### Supuestos
 - Servingeniería opera desde una sola bodega física de materiales.
@@ -304,30 +340,4 @@ Después de caracterizar escenarios y votar con los roles involucrados, estos so
 - Si eliminar por completo la cuenta de un empleado puede afectar el historial de pedidos, entradas y salidas que ese empleado haya registrado.
 - Nivel de conocimiento tecnológico real de los empleados de campo.
 - Qué funcionalidades quedan fuera de la primera fase en caso de restricción de presupuesto o tiempo.
-
----
-
-## Glosario
-
-| Término | Definición |
-|---------|------------|
-| Pedido | Solicitud de compra de productos realizada a un proveedor. |
-| Entrada | Registro del ingreso físico de mercancía a la bodega, asociado o no a un pedido. |
-| Salida | Registro de la salida de productos de la bodega, asociada a un proyecto. |
-| Proyecto | Iniciativa de mantenimiento o montaje de una planta de tratamiento de agua, para la cual se asignan empleados y se registran salidas de productos. |
-| Stock | Cantidad disponible de un producto en la bodega en un momento dado. |
-| Código QR o código de barras | Identificador visual que permite consultar o registrar un producto rápidamente mediante la cámara del dispositivo. |
-| Notificación de stock bajo | Alerta automática generada cuando la cantidad disponible de un producto cae por debajo de un mínimo establecido. |
-
----
-
-## Notas del equipo de desarrollo
-
-Cada elemento del sistema está cubierto por al menos un requisito de usuario:
-
-- Empleado: crear, consultar, editar, eliminar.
-- Producto y categoría: crear, consultar, editar. Sin inactivación.
-- Pedido, entrada, salida y proyecto: con estados propios y control de edición según el estado.
-- Notificaciones: se generan automáticamente. Se consultan y se marcan como leídas.
-- Registros de estado: se generan automáticamente y se consultan en el módulo de historial.
 - Catálogo de estados: fijo, no editable por el usuario
