@@ -57,7 +57,7 @@ En el sistema solo existen **dos roles de acceso**:
 
 ### Tipos de personas que usan el sistema
 
-Aunque solo hay dos roles de acceso, en la práctica el sistema lo van a usar diferentes tipos de personas dentro de Servingeniería. Todos entran con el rol de **Empleado**, excepto quien tenga el rol de **Administrador**.
+Aunque solo hay dos roles de acceso, en la práctica el sistema lo van a usar diferentes tipos de personas dentro de Servingeniería. Todos entran con el rol de Empleado, excepto quien tenga el rol de Administrador.
 
 | Tipo de persona | Cómo entra al sistema | Qué hace principalmente |
 |-----------------|-----------------------|-------------------------|
